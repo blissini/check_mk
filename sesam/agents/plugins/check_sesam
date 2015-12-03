@@ -1,0 +1,22 @@
+#!/bin/sh
+echo '<<<sesam:sep(9)>>>'
+#for disk in /dev/[sh]d[a-z] /dev/sd[a-z][a-z]
+#do
+#   smartctl -d ata -A $disk | grep ' Always ' | sed "s@^@$disk @"
+#done
+
+sesam_ini_file=/etc/sesam2000.ini
+
+
+read_ini()
+{
+  source $(grep -i '^sm_ini=' $sesam_ini_file | cut -d"=" -f2) 2>/dev/null
+}
+
+read_ini
+
+source ${gv_rw_ini}/sesam2000.profile > /dev/null 2>&1
+
+latest_status_file=$(ls -tr $gv_rw_prot/*.status | tail -n2 | head -n1) 
+
+cat $latest_status_file | egrep -v '^Start|-------' | awk '{printf $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t" $6 "\t"; for(i=7;i<NF;i++){ printf " %s", $i} printf "\n" }'
