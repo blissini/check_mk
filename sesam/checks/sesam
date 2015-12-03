@@ -1,13 +1,14 @@
-
+# inventory function
 def inventory_sesam_backup(info):
+
     # loop over all output lines of the agent
     for line in info:
         backup = line[1]   # device name is in the first column
-	
+
         yield backup, None
 
 
-# the check function (dummy)
+# check function
 def check_sesam_backup(item, params, info):
     for line in info:
         if line[1] == item:
@@ -24,6 +25,7 @@ def check_sesam_backup(item, params, info):
                 return 2, message
             else:
                return 1, message
+
 
 # declare the check to Check_MK
 check_info["sesam.backup"] = {
